@@ -1,7 +1,7 @@
 // src/api.ts
 import { User } from '../contexts/AuthContext';  // Import User type if needed
 
-const BACKEND_URL = "https://typehype.onrender.com/";  
+const BACKEND_URL = "https://typehype.onrender.com/";  // Replace with your production URL
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem("token");
@@ -11,7 +11,7 @@ export const checkUsername = async (name: string): Promise<string> => {
   try {
     const response = await fetch(`${BACKEND_URL}/suggest-username`, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name })
     });
     if (!response.ok) throw new Error("Failed to suggest username");
@@ -27,11 +27,11 @@ export const registerUser = async (userData: Omit<User, 'id'> & { password: stri
   try {
     const response = await fetch(`${BACKEND_URL}/register`, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userData)
     });
     if (!response.ok) throw new Error("Registration failed");
-    return await response.json();  # Returns {user_id, message}
+    return await response.json(); // Returns {user_id, message}
   } catch (e) {
     throw new Error("Registration failed");
   }
@@ -42,9 +42,9 @@ export const loginUser = async (email: string, password: string) => {
   try {
     const response = await fetch(`${BACKEND_URL}/login`, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
-  });
+    });
     if (!response.ok) throw new Error("Login failed");
     const data = await response.json();
     localStorage.setItem("token", data.token);
@@ -66,7 +66,7 @@ export const uploadFile = async (file: File) => {
   try {
     const response = await fetch(`${BACKEND_URL}/embed`, {
       method: 'POST',
-      headers: {'Authorization': `Bearer ${getToken()}`},
+      headers: { 'Authorization': `Bearer ${getToken()}` },
       body: formData
     });
     if (!response.ok) throw new Error("Upload failed");
@@ -77,7 +77,7 @@ export const uploadFile = async (file: File) => {
 };
 
 // Query
-export const sendQuery = async (question: str):
+export const sendQuery = async (question: string) => {
   try {
     const response = await fetch(`${BACKEND_URL}/query`, {
       method: 'POST',
@@ -96,9 +96,9 @@ export const sendQuery = async (question: str):
 
 // Get user's documents
 export const getMyDocuments = async () => {
-  try:
+  try {
     const response = await fetch(`${BACKEND_URL}/my-docs`, {
-      headers: {'Authorization': `Bearer ${getToken()}`}
+      headers: { 'Authorization': `Bearer ${getToken()}` }
     });
     if (!response.ok) throw new Error("Failed to get documents");
     return await response.json();
@@ -108,8 +108,8 @@ export const getMyDocuments = async () => {
 };
 
 // Delete document
-export const deleteDocument = async (filename: str) => {
-  try:
+export const deleteDocument = async (filename: string) => {
+  try {
     const response = await fetch(`${BACKEND_URL}/delete`, {
       method: 'POST',
       headers: {
@@ -127,7 +127,7 @@ export const deleteDocument = async (filename: str) => {
 
 // Update profile (if needed later)
 export const updateProfile = async (updates: Partial<User>) => {
-  try:
+  try {
     const response = await fetch(`${BACKEND_URL}/update-profile`, {
       method: 'POST',
       headers: {
@@ -141,6 +141,4 @@ export const updateProfile = async (updates: Partial<User>) => {
   } catch (e) {
     throw new Error("Update failed");
   }
-
 };
-
