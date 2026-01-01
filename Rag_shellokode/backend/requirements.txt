@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-dotenv
+voyageai
+qdrant-client
+pdfplumber
+python-docx
+pandas
+openpyxl
+python-pptx
+langchain-text-splitters
+streamlit
+requests
