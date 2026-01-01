@@ -12,3 +12,5 @@ langchain-text-splitters
 streamlit
 pymongo[srv]
 requests
+python-multipart
+
