@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       try {
-        const res = await fetch('http://127.0.0.1:8000/me', {
+        const res = await fetch('https://typehype.onrender.com/me', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -79,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/login', {
+      const res = await fetch('https://typehype.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.setItem('token', data.token);
 
       // Fetch user profile
-      const meRes = await fetch('http://127.0.0.1:8000/me', {
+      const meRes = await fetch('https://typehype.onrender.com/me', {
         headers: { Authorization: `Bearer ${data.token}` },
       });
 
@@ -129,7 +129,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     profilePicture?: string;
   }): Promise<{ success: boolean; username?: string; message?: string }> => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/register', {
+      const res = await fetch('https://typehype.onrender.com/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
