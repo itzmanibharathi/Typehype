@@ -1,6 +1,5 @@
 // src/api.ts
-import { User } from '../contexts/AuthContext';  // Import User type if needed
-import { AuthProvider } from './contexts/AuthContext'; 
+import type { User } from 'contexts/AuthContext';
 
 const BACKEND_URL = "https://typehype.onrender.com/";  // Replace with your production URL
 
@@ -143,6 +142,7 @@ export const updateProfile = async (updates: Partial<User>) => {
     throw new Error("Update failed");
   }
 };
+
 
 
 
