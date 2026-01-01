@@ -10,4 +10,5 @@ openpyxl
 python-pptx
 langchain-text-splitters
 streamlit
+pymongo[srv]
 requests
