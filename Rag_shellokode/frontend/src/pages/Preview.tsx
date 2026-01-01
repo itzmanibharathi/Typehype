@@ -47,8 +47,8 @@ const Preview: React.FC = () => {
     const fetchData = async () => {
       try {
         const [docsRes, statsRes] = await Promise.all([
-          fetch('http://127.0.0.1:8000/my-docs', { headers: { 'Authorization': `Bearer ${token}` } }),
-          fetch('http://127.0.0.1:8000/collection-stats', { headers: { 'Authorization': `Bearer ${token}` } })
+          fetch('https://typehype.onrender.com/my-docs', { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch('https://typehype.onrender.com/collection-stats', { headers: { 'Authorization': `Bearer ${token}` } })
         ]);
 
         if (docsRes.ok) {
@@ -95,7 +95,7 @@ const Preview: React.FC = () => {
   const handleDelete = async (filename: string) => {
     setDeleting(filename);
     try {
-      const res = await fetch('http://127.0.0.1:8000/delete', {
+      const res = await fetch('https://typehype.onrender.com/delete', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
