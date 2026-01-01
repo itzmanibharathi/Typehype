@@ -1,7 +1,7 @@
 // src/api.ts
 import { User } from '../contexts/AuthContext';  // Import User type if needed
 
-const BACKEND_URL = "http://127.0.0.1:8000";  # Replace with your production URL
+const BACKEND_URL = "https://typehype.onrender.com/";  # Replace with your production URL
 
 // Get token from localStorage
 const getToken = () => localStorage.getItem("token");
@@ -141,4 +141,5 @@ export const updateProfile = async (updates: Partial<User>) => {
   } catch (e) {
     throw new Error("Update failed");
   }
+
 };
