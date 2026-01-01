@@ -1,8 +1,8 @@
-// src/contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-interface User {
+// Export User interface first
+export interface User {
   id: string;
   firstName: string;
   lastName: string;
