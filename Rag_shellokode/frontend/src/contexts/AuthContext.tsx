@@ -1,16 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-// Export User interface first
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  username: string;
-  profilePicture?: string;
-}
+
+
 
 interface AuthContextType {
   user: User | null;
@@ -194,3 +186,13 @@ export const useAuth = () => {
   }
   return context;
 };
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  username: string;
+  profilePicture?: string;
+}
+
