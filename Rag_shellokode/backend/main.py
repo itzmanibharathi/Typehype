@@ -221,6 +221,13 @@ async def login(data: LoginRequest):
 
     return {"token": user["user_id"]}
 
+@app.get("/test-llm")
+async def test_llm():
+    answer = query_with_openrouter(
+        context=["Paris is the capital of France."],
+        question="What is the capital of France?"
+    )
+    return {"answer": answer}
 
 @app.get("/me")
 async def me(user=Depends(get_current_user)):
@@ -325,5 +332,6 @@ async def collection_stats(user=Depends(get_current_user)):
 
 if __name__ == "__main__":
     import uvicorn
+
 
     uvicorn.run( "main:app",  host="127.0.0.1",  port=8000,  reload=True)
