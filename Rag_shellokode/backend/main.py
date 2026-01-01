@@ -221,13 +221,7 @@ async def login(data: LoginRequest):
 
     return {"token": user["user_id"]}
 
-@app.get("/test-llm")
-async def test_llm():
-    answer = query_with_openrouter(
-        context=["Paris is the capital of France."],
-        question="What is the capital of France?"
-    )
-    return {"answer": answer}
+
 
 @app.get("/me")
 async def me(user=Depends(get_current_user)):
@@ -327,6 +321,13 @@ async def collection_stats(user=Depends(get_current_user)):
         raise HTTPException(400, "No vector collection for user")
     return get_collection_stats(collection_name)
 
+@app.get("/test-llm")
+async def test_llm():
+    answer = query_with_openrouter(
+        context=["Paris is the capital of France."],
+        question="What is the capital of France?"
+    )
+    return {"answer": answer}
 
 # ================== RUN ==================
 
@@ -335,3 +336,4 @@ if __name__ == "__main__":
 
 
     uvicorn.run( "main:app",  host="127.0.0.1",  port=8000,  reload=True)
+
