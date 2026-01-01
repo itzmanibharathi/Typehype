@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "start": "vite preview"
+    "start": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -16,8 +16,8 @@
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
     "react-hot-toast": "^2.4.1",
-  "chart.js": "^4.4.4",
-  "react-chartjs-2": "^5.2.0",
+    "chart.js": "^4.4.4",
+    "react-chartjs-2": "^5.2.0",
     "date-fns": "^2.30.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
