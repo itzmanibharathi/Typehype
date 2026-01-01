@@ -81,7 +81,7 @@ const Home: React.FC = () => {
       formData.append('file', file);
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/embed', {
+        const response = await fetch('https://typehype.onrender.com/embed', {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}` },
           body: formData,
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
     if (!token) return;
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/delete', {
+      const res = await fetch('https://typehype.onrender.com/delete', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
