@@ -3,6 +3,9 @@ import uuid
 import hashlib
 import requests
 import tempfile
+import logging
+
+
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -30,15 +33,11 @@ app = FastAPI(title="TypeHype RAG Backend")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://ragtypehype.onrender.com",   # your frontend
-        "http://localhost:5173",             # local dev (Vite)
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 security = HTTPBearer()
 
@@ -55,9 +54,10 @@ OPENROUTER_HEADERS = {
     "Authorization": f"Bearer {OPENROUTER_API_KEY}",
     "Content-Type": "application/json",
 }
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 # Best free model as of December 31, 2025
-OPENROUTER_MODEL = "xiaomi/mimo-v2-flash:free"
+OPENROUTER_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free"
 
 
 # ================== MODELS ==================
@@ -226,7 +226,6 @@ async def login(data: LoginRequest):
     return {"token": user["user_id"]}
 
 
-
 @app.get("/me")
 async def me(user=Depends(get_current_user)):
     return {
@@ -325,19 +324,10 @@ async def collection_stats(user=Depends(get_current_user)):
         raise HTTPException(400, "No vector collection for user")
     return get_collection_stats(collection_name)
 
-@app.get("/test-llm")
-async def test_llm():
-    answer = query_with_openrouter(
-        context=["Paris is the capital of France."],
-        question="What is the capital of France?"
-    )
-    return {"answer": answer}
 
 # ================== RUN ==================
 
 if __name__ == "__main__":
     import uvicorn
 
-
     uvicorn.run( "main:app",  host="127.0.0.1",  port=8000,  reload=True)
-
