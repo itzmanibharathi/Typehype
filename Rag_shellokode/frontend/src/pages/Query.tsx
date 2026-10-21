@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Send, Bot, Mic, MicOff, Speaker, VolumeX, Copy, Check, Trash2, BarChart2 } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar, Line, Pie, Doughnut } from 'react-chartjs-2';
+import { BACKEND_URL } from '../api';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, ArcElement, Title, Tooltip, Legend);
 
@@ -95,8 +96,16 @@ const Query: React.FC = () => {
       setSpeakingMessageId(null);
     } else {
       speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
+      // Clean text for speech synthesis so symbols (*, -, #, URLs) are not spelled out
+      const cleanSpeech = text
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/https?:\/\/\S+/g, '')
+        .replace(/[*#_~`>•\-\\]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      const utterance = new SpeechSynthesisUtterance(cleanSpeech);
+      utterance.rate = 0.95;
       utterance.pitch = 1;
 
       utterance.onend = () => setSpeakingMessageId(null);
@@ -164,7 +173,7 @@ const Query: React.FC = () => {
     const chartRequest = detectChartRequest(input);
 
     try {
-      const res = await fetch('https://typehype.onrender.com/query', {
+      const res = await fetch(`${BACKEND_URL}/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -174,6 +183,9 @@ const Query: React.FC = () => {
       });
 
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || `Server returned error (${res.status})`);
+      }
       let answer = data.answer || "No answer received.";
 
       let chartConfig = null;
@@ -199,9 +211,9 @@ const Query: React.FC = () => {
       };
 
       setMessages(prev => [...prev, aiMsg]);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setMessage({ type: 'error', text: 'Network error. Please try again.' });
+      setMessage({ type: 'error', text: err?.message || 'Network error. Please try again.' });
     } finally {
       setLoading(false);
     }

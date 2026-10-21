@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 import certifi  # Fixes SSL handshake error
 
+ENV_PATH = os.path.join(os.path.dirname(__file__), ".env")
+load_dotenv(dotenv_path=ENV_PATH)
 load_dotenv()
 
 MONGO_URI = os.getenv("MONGO_URI")

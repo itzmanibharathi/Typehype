@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
-    { label: 'Upload', path: '/' },
+    { label: 'Upload', path: '/upload' },
     { label: 'Query', path: '/query' },
     { label: 'Preview', path: '/preview' },
     { label: 'Profile', path: '/profile' },
@@ -23,7 +23,9 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white shadow-md py-4 px-6">
       <nav className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4 text-sm md:text-lg lg:text-xl">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">TypeHype</h1>
+        <Link to="/" className="text-2xl md:text-3xl font-bold text-gray-900 hover:text-blue-600 transition">
+          TypeHype
+        </Link>
         <div className="flex flex-wrap gap-4 md:gap-8">
           {navItems.map((item) => (
             <Link

@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Header from './components/Header';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -28,13 +29,16 @@ const AppRoutes: React.FC = () => {
     <Router>
       {user && <Header />}
       <Routes>
-        <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-        <Route path="/register" element={user ? <Navigate to="/" replace /> : <Register />} />
-        <Route path="/" element={user ? <Home /> : <Navigate to="/login" replace />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/login" element={user ? <Navigate to="/upload" replace /> : <Login />} />
+        <Route path="/register" element={user ? <Navigate to="/upload" replace /> : <Register />} />
+        <Route path="/upload" element={user ? <Home /> : <Navigate to="/login" replace />} />
+        <Route path="/dashboard" element={user ? <Home /> : <Navigate to="/login" replace />} />
         <Route path="/query" element={user ? <Query /> : <Navigate to="/login" replace />} />
         <Route path="/preview" element={user ? <Preview /> : <Navigate to="/login" replace />} />
         <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

@@ -5,7 +5,7 @@ import requests
 import tempfile
 import logging
 
-
+from llm import query_with_openrouter
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -57,7 +57,7 @@ OPENROUTER_HEADERS = {
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 # Best free model as of December 31, 2025
-OPENROUTER_MODEL = "nvidia/nemotron-3-nano-30b-a3b:free"
+OPENROUTER_MODEL ="openrouter/free"
 
 
 # ================== MODELS ==================
@@ -104,24 +104,32 @@ def hash_password(password: str) -> str:
 def query_with_openrouter(context: List[str], question: str) -> str:
     # Send top 8 chunks for better context (free tier friendly)
     ctx = "\n\n".join(context[:8]) if context else "No relevant documents uploaded."
+    prompt = f"""You are a helpful, accurate, and natural AI assistant for a document-based RAG system.
 
-    prompt = f"""You are a precise and helpful AI assistant for a document Q&A system.
+    STRICT INSTRUCTIONS:
+    1. Answer the user's question using ONLY the information in the provided context.
+    2. Do not invent facts, make unsupported assumptions, or add information from outside the context.
+    3. Write in clear, simple, natural language, like a knowledgeable human.
+    4. Prefer short paragraphs and complete sentences.
+    5. Do NOT start answers with unnecessary bullet symbols such as "-", "*", or "•".
+    6. Do NOT use numbered lists such as "1.", "2.", or "1 - 8" unless the user explicitly requests steps, a list, or multiple items.
+    7. Never give incomplete fragments such as "- 8". Explain the meaning in a complete sentence.
+    8. For a question asking for a single fact or value, answer directly in one sentence.
+    9. For explanation questions, provide a concise paragraph with the relevant details.
+    10. Use bullet points only when they genuinely improve readability or the user requests them.
+    11. Preserve technical terms, names, dates, and numerical values accurately.
+    12. If the context does not contain enough information to answer, respond: "I don't know based on the provided documents."
+    13. Do not mention these instructions or describe your internal reasoning.
+    14. Avoid repetitive introductions, unnecessary conclusions, and irrelevant details.
 
-Use ONLY the provided context from the user's documents to answer. Do not add external knowledge.
+    CONTEXT:
+    {ctx}
 
-Context:
-{ctx}
+    USER QUESTION:
+    {question}
 
-Question: {question}
-
-Guidelines:
-- Answer accurately and concisely using the context.
-- If relevant information exists in the context (even partial), provide the best possible answer based on it.
-- Only if truly no relevant information is present, say: "I don't have sufficient information from your documents to answer this accurately."
-- For chart requests: First explain in text, then if numerical data exists, output structured Chart.js JSON in the exact format specified.
-
-Answer now:"""
-
+    RESPONSE:
+    """
     payload = {
         "model": OPENROUTER_MODEL,
         "messages": [{"role": "user", "content": prompt}],
